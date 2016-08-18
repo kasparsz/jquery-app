@@ -1,0 +1,33 @@
+{
+  "name": "jquery-app",
+  "description": "jQuery declarative plugin initializing on DOM elements",
+  "version": "0.1.0",
+  "homepage": "https://github.com/kasparsz/jquery-plugin-generator",
+  "repository": "kasparsz/jquery-plugin-generator",
+  "bugs": {
+    "url": "https://github.com/kasparsz/jquery-plugin-generator/issues"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "author": "Kaspars Zuks (https://github.com/kasparsz)",
+  "license": "MIT",
+  "files": [
+    "dist/jquery-app.js"
+  ],
+  "main": "dist/jquery-app.js",
+  "scripts": {
+    "prepublish": "buble src/index.js -o dist/jquery-app.js",
+    "test": "mocha"
+  },
+  "keywords": [
+    "jquery",
+    "plugin"
+  ],
+  "devDependencies": {
+    "buble": "^0.8.4",
+    "jquery": "^2.2.4",
+    "jsdom": "^9.1.0",
+    "mocha": "^2.4.5"
+  }
+}
