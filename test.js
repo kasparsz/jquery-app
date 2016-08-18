@@ -37,6 +37,20 @@ describe('jquery-app', function(done) {
         $.fn.foo = function () { foo++; };
         $.fn.bar = function () { bar++; };
 
+        $('body').append('<div data-plugin="foo, bar"></div>').app();
+
+        assert.equal(foo, 1);
+        assert.equal(bar, 1);
+        done();
+    }));
+
+    it('should call multiple plugins on same element', createTestEnv(function (done, $) {
+        var foo = 0;
+        var bar = 0;
+
+        $.fn.foo = function () { foo++; };
+        $.fn.bar = function () { bar++; };
+
         $('body').append('<div data-plugin="foo"><span data-plugin="bar"></span></div>').app();
 
         assert.equal(foo, 1);
@@ -86,6 +100,26 @@ describe('jquery-app', function(done) {
         };
 
         $('body').append('<div data-plugin="test" data-test-name="John" data-test-age="21"></div>').app();
+    }));
+
+    it('should pass options to all plugins', createTestEnv(function (done, $) {
+        var foo = false;
+        var bar = false;
+
+        $.fn.foo = function (options) {
+            assert.equal(options.name, 'John');
+            foo = true;
+        };
+        $.fn.bar = function (options) {
+            assert.equal(options.name, 'Jane');
+            bar = true;
+        };
+
+        $('body').append('<div data-plugin="foo, bar" data-foo-name="John" data-bar=\'{"name": "Jane"}\'></div>').app();
+
+        assert.equal(foo, true);
+        assert.equal(bar, true);
+        done();
     }));
 
 });
