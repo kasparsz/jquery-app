@@ -2,10 +2,10 @@
   "name": "jquery-app",
   "description": "Declarative jQuery plugin initialization on DOM elements",
   "version": "0.1.0",
-  "homepage": "https://github.com/kasparsz/jquery-plugin-generator",
-  "repository": "kasparsz/jquery-plugin-generator",
+  "homepage": "https://github.com/kasparsz/jquery-app",
+  "repository": "kasparsz/jquery-app",
   "bugs": {
-    "url": "https://github.com/kasparsz/jquery-plugin-generator/issues"
+    "url": "https://github.com/kasparsz/jquery-app/issues"
   },
   "engines": {
     "node": ">=0.10.0"
