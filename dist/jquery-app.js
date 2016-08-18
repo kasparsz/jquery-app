@@ -13,7 +13,11 @@
 
     $.app = {
         settings: {
-            'namespace': 'plugin'
+            // data attribute, which will be used to read list of plugin names
+            'namespace': 'plugin',
+
+            // Pass to plugin only data from data-PLUGIN... attributes
+            'namespaceOptions': true
         },
 
         /**
@@ -52,7 +56,7 @@
             var plugins = $element.data($.app.settings.namespace).split(REGEX_SPLIT);
 
             return plugins.filter(function (plugin) {
-                return (typeof $.fn[plugin] === 'function');
+                return (plugin && typeof $.fn[plugin] === 'function');
             });
         },
 
@@ -64,40 +68,32 @@
          * @returns {object} Plugin options/settings
          */
         getPluginOptions: function ($element, plugin) {
-            // data-PLUGIN="VALUE",  data-PLUGIN-PROPERTY="VALUE"
             var attrs   = $element.get(0).attributes;
             var prefix  = "data-" + plugin;
             var options = {};
 
             var data    = $element.data();
 
-            for (var key in data) {
-                var value = data[key];
+            if ($.app.settings.namespaceOptions) {
+                // Pass only data starting with data-PLUGIN
+                for (var key in data) {
+                    var value = data[key];
 
-                if (key === plugin) {
-                    $.extend(options, value);
-                }  else if (key.indexOf(plugin) === 0 && key.substr(plugin.length, 1).match(REGEX_NOT_LOWERCASE)) {
-                    var name = key.substr(plugin.length);
-                    name = name[0].toLowerCase() + name.substr(1);
+                    if (key === plugin) {
+                        // data-PLUGIN="JSON"
+                        $.extend(options, $.isPlainObject(value) ? value : {});
+                    }  else if (key.indexOf(plugin) === 0 && key.substr(plugin.length, 1).match(REGEX_NOT_LOWERCASE)) {
+                        // data-PLUGIN-PROPERTY="VALUE"
+                        var name = key.substr(plugin.length);
+                        name = name[0].toLowerCase() + name.substr(1);
 
-                    options[name] = value;
+                        options[name] = value;
+                    }
                 }
+            } else {
+                // Pass all data into options
+                $.extend(options, data);
             }
-
-            /*
-            for (let i = 0, ii = attrs.length; i < ii; i++) {
-                let name = attrs[i].name;
-
-                if (name === prefix) {
-                    // data-PLUGIN="JSON"
-                    $.extend(options, $element.data(plugin));
-                } else if (name.indexOf(prefix + '-') === 0) {
-                    // data-PLUGIN-PROPERTY="VALUE"
-                    let prop = name.substr(prefix.length + 1); // attribute name without "data-plugin-"
-                    options[$.camelCase(prop)] = value;
-                }
-            }
-            */
 
             return options;
         }

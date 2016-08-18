@@ -56,7 +56,7 @@
             const plugins = $element.data($.app.settings.namespace).split(REGEX_SPLIT);
 
             return plugins.filter((plugin) => {
-                return (typeof $.fn[plugin] === 'function');
+                return (plugin && typeof $.fn[plugin] === 'function');
             });
         },
 
@@ -81,7 +81,7 @@
 
                     if (key === plugin) {
                         // data-PLUGIN="JSON"
-                        $.extend(options, $.isPlainObject(value) ? value : null);
+                        $.extend(options, $.isPlainObject(value) ? value : {});
                     }  else if (key.indexOf(plugin) === 0 && key.substr(plugin.length, 1).match(REGEX_NOT_LOWERCASE)) {
                         // data-PLUGIN-PROPERTY="VALUE"
                         let name = key.substr(plugin.length);
