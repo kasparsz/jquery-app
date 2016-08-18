@@ -55,6 +55,7 @@ $(function () {
 | Name     | Type    | Usage                                    | Default  |
 | -------- | ------- | ---------------------------------------- | -------- |
 | namespace    | String | Data attribute name from which read list of plugin names | "plugin"     |
+| namespaceOptions    | Boolean | Pass to plugin only data from attributes starting with plugin name, eg. data-datepicker. If set to false all data is passed to plugin as ```options``` | true     |
 
 ## Running tests
 
