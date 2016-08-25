@@ -1,7 +1,7 @@
 {
   "name": "jquery-app",
   "description": "Declarative jQuery plugin initialization on DOM elements",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/kasparsz/jquery-app",
   "repository": "kasparsz/jquery-app",
   "bugs": {
