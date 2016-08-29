@@ -17,7 +17,10 @@
             'namespace': 'plugin',
 
             // Pass to plugin only data from data-PLUGIN... attributes
-            'namespaceOptions': true
+            'namespaceOptions': true,
+
+            // Debug mode
+            'debug': false
         },
 
         /**
@@ -42,6 +45,12 @@
                     // As only argument pass plugin options
                     const options = $.app.getPluginOptions($element, plugin);
                     $element[plugin](options);
+
+                    if ($.app.settings.debug) {
+                        console.log('$.app called plugin "%s" on %o with options %O', plugin, element, options);
+                    }
+                } else if ($.app.settings.debug) {
+                    console.log('$.app skipped plugin "%s" on %o because it already has been called previously', plugin, element);
                 }
             });
         },
@@ -56,7 +65,15 @@
             const plugins = $element.data($.app.settings.namespace).split(REGEX_SPLIT);
 
             return plugins.filter((plugin) => {
-                return (plugin && typeof $.fn[plugin] === 'function');
+                if (plugin) {
+                    if (typeof $.fn[plugin] === 'function') {
+                        return true;
+                    } else if ($.app.settings.debug) {
+                        console.error('$.app coundn\'t find jQuery plugin "%s" declared on element %o', plugin, $element.get(0));
+                    }
+                }
+
+                return false;
             });
         },
 
@@ -68,7 +85,6 @@
          * @returns {object} Plugin options/settings
          */
         getPluginOptions: function ($element, plugin) {
-            const attrs   = $element.get(0).attributes;
             const prefix  = `data-${plugin}`;
             const options = {};
 
