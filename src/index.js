@@ -85,9 +85,7 @@
          * @returns {object} Plugin options/settings
          */
         getPluginOptions: function ($element, plugin) {
-            const prefix  = `data-${plugin}`;
             const options = {};
-
             const data    = $element.data();
 
             if ($.app.settings.namespaceOptions) {
