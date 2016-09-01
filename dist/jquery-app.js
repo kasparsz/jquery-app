@@ -5,8 +5,15 @@
  * Licensed under the MIT License.
  */
 
-(function (global) {
-    var $ = global.jQuery || window.jQuery;
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		factory(require('jquery'));
+	} else {
+		factory(jQuery);
+    }
+}(function ($) {
     var REGEX_SPLIT = /\s*,\s*/;
     var REGEX_NOT_LOWERCASE = /[^a-z]/;
     var PROPERTY_NAME = 'jQueryAppData';
@@ -130,4 +137,4 @@
         return this;
     };
 
-})(this);
+}));
