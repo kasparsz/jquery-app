@@ -1,15 +1,15 @@
 /*!
  * jquery-app <https://github.com/kasparsz/jquery-app>
  *
- * Copyright (c) 2016, Kaspars Zuks.
+ * Copyright (c) 2016-2017, Kaspars Zuks.
  * Licensed under the MIT License.
  */
 
 (function (factory) {
-	if (typeof define === 'function' && define.amd) {
+    if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
-	} else if (typeof exports === 'object') {
-		factory(require('jquery'));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'));
 	} else {
 		factory(jQuery);
     }
