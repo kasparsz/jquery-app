@@ -6,22 +6,27 @@ var assert = require('assert');
 var fs = require('fs');
 var jsdom = require('jsdom');
 
-var jQuery = fs.readFileSync('./node_modules/jquery/dist/jquery.js', "utf-8");
-var jQueryApp = fs.readFileSync('./dist/jquery-app.js', "utf-8");
+var jQuery = fs.readFileSync('./node_modules/jquery/dist/jquery.js', 'utf-8');
+var jQueryApp = fs.readFileSync('./dist/jquery-app.js', 'utf-8');
 
 function createTestEnv(fn) {
     return function (done) {
-        jsdom.env('<html><body></body></html>', {
-            src: [jQuery, jQueryApp],
-            done: function (err, window) {
-                if (err) throw err; // everything should fail
+        var dom = new jsdom.JSDOM('<html><body></body></html>', {'runScripts': 'dangerously'});
+        var window = dom.window;
 
-                fn(done, window.$);
-                window.close(); // clean up memory
-            }
-        });
+        var script = window.document.createElement('script');
+        script.textContent = jQuery;
+        window.document.body.appendChild(script);
+
+        var script = window.document.createElement('script');
+        script.textContent = jQueryApp;
+        window.document.body.appendChild(script);
+
+        fn(done, window.$);
+        window.close(); // clean up memory
     };
 }
+
 
 describe('jquery-app', function(done) {
 

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2017-08-07
+### Changed
+- Updated depedencies
+
 ## [1.0.0] - 2017-08-07
 ### Changed
 - Fixed jQuery module loading to prevent webpack from requiring jQuery during build
@@ -17,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ```debug``` configuration option [\#1](https://github.com/kasparsz/jquery-app/issues/1)
 
 
+[1.0.0]: https://github.com/kasparsz/jquery-app/compare/v1.0.0...v1.1.0
 [0.4.0]: https://github.com/kasparsz/jquery-app/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/kasparsz/jquery-app/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/kasparsz/jquery-app/compare/v0.2.2...v0.3.1
