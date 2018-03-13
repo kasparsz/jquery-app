@@ -35,7 +35,7 @@ describe('jquery-app', function(done) {
         done();
     }));
 
-    it('should call plugin', createTestEnv(function (done, $) {
+    it('should call multiple plugins separated by comma', createTestEnv(function (done, $) {
         var foo = 0;
         var bar = 0;
 
@@ -43,6 +43,20 @@ describe('jquery-app', function(done) {
         $.fn.bar = function () { bar++; };
 
         $('body').append('<div data-plugin="foo, bar"></div>').app();
+
+        assert.equal(foo, 1);
+        assert.equal(bar, 1);
+        done();
+    }));
+
+    it('should call multiple plugins separated by whitespace', createTestEnv(function (done, $) {
+        var foo = 0;
+        var bar = 0;
+
+        $.fn.foo = function () { foo++; };
+        $.fn.bar = function () { bar++; };
+
+        $('body').append('<div data-plugin="foo bar"></div>').app();
 
         assert.equal(foo, 1);
         assert.equal(bar, 1);

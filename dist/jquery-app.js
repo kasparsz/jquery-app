@@ -14,7 +14,7 @@
 		factory(jQuery);
     }
 }(function ($) {
-    var REGEX_SPLIT = /\s*,\s*/;
+    var REGEX_SPLIT = /(\s*,\s*|\s+)/;
     var REGEX_NOT_LOWERCASE = /[^a-z]/;
     var PROPERTY_NAME = 'jQueryAppData';
 
