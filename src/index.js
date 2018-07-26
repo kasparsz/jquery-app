@@ -1,7 +1,7 @@
 /*!
  * jquery-app <https://github.com/kasparsz/jquery-app>
  *
- * Copyright (c) 2016-2017, Kaspars Zuks.
+ * Copyright (c) 2016-2018, Kaspars Zuks.
  * Licensed under the MIT License.
  */
 

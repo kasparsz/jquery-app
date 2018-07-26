@@ -136,7 +136,7 @@ $ npm install -d && npm test
 
 ## License
 
-Copyright © 2016, [Kaspars Zuks](https://github.com/kasparsz).
+Copyright © 2018, [Kaspars Zuks](https://github.com/kasparsz).
 Released under the [MIT license](https://github.com/kasparsz/jquery-app/blob/master/LICENSE).
 
 [npm-url]: https://npmjs.org/package/jquery-app
