@@ -19,6 +19,10 @@
     const PROPERTY_NAME = 'jQueryAppData';
 
     $.app = {
+
+        /*
+         * Default $.app settings
+         */
         settings: {
             // data attribute, which will be used to read list of plugin names
             'namespace': 'plugin',
@@ -34,10 +38,11 @@
          * Call all plugins for element
          *
          * @param {object} $element jQuery element
+         * @param {object?} [settings] jQuery App settings
          */
-        call: function (element) {
+        call: function (element, settings = $.app.settings) {
             const $element = $(element);
-            const plugins  = $.app.getPlugins($element);
+            const plugins  = $.app.getPlugins($element, settings);
             let   data     = $element.data(PROPERTY_NAME);
 
             if (!data) {
@@ -50,13 +55,13 @@
                     data[plugin] = true;
 
                     // As only argument pass plugin options
-                    const options = $.app.getPluginOptions($element, plugin);
+                    const options = $.app.getPluginOptions($element, plugin, settings);
                     $element[plugin](options);
 
-                    if ($.app.settings.debug) {
+                    if (settings.debug) {
                         console.log('$.app called plugin "%s" on %o with options %O', plugin, element, options);
                     }
-                } else if ($.app.settings.debug) {
+                } else if (settings.debug) {
                     console.log('$.app skipped plugin "%s" on %o because it already has been called previously', plugin, element);
                 }
             });
@@ -66,16 +71,17 @@
          * Returns list of plugin names for element
          *
          * @param {object} $element jQuery element
+         * @param {object?} [settings] jQuery App settings
          * @returns {array} List of plugin names
          */
-        getPlugins: function ($element) {
-            const plugins = $element.data($.app.settings.namespace).split(REGEX_SPLIT);
+        getPlugins: function ($element, settings = $.app.settings) {
+            const plugins = $element.data(settings.namespace).split(REGEX_SPLIT);
 
             return plugins.filter((plugin) => {
                 if (plugin) {
                     if (typeof $.fn[plugin] === 'function') {
                         return true;
-                    } else if ($.app.settings.debug) {
+                    } else if (settings.debug) {
                         console.error('$.app coundn\'t find jQuery plugin "%s" declared on element %o', plugin, $element.get(0));
                     }
                 }
@@ -89,13 +95,14 @@
          *
          * @param {object} $element jQuery element
          * @param {string} plugin Plugin name
+         * @param {object?} [settings] jQuery App settings
          * @returns {object} Plugin options/settings
          */
-        getPluginOptions: function ($element, plugin) {
+        getPluginOptions: function ($element, plugin, settings = $.app.settings) {
             const options = {};
             const data    = $element.data();
 
-            if ($.app.settings.namespaceOptions) {
+            if (settings.namespaceOptions) {
                 // Pass only data starting with data-PLUGIN
                 for (let key in data) {
                     let value = data[key];
@@ -117,6 +124,33 @@
             }
 
             return options;
+        },
+
+
+
+        /**
+         * Returns true if element has a specific plugin defined as data-... attribute
+         *
+         * @param {object} $element jQuery element
+         * @param {string} plugin Plugin name
+         * @param {object?} [settings] jQuery App settings
+         * @returns {boolean} True if plugin is defined for element, otherwise false
+         */
+        hasPluginDefined: function ($element, plugin, settings = $.app.settings) {
+            const plugins = $.app.getPlugins($element, settings);
+            return plugins.indexOf(plugin) !== -1;
+        },
+
+        /**
+         * Returns true if specific plugin has been called for element
+         *
+         * @param {object} $element jQuery element
+         * @param {string} plugin Plugin name
+         * @returns {boolean} True if plugin has been created for element, otherwise false
+         */
+        hasPlugin: function ($element, plugin) {
+            const data = $element.data(PROPERTY_NAME);
+            return !!(data && data[plugin]);
         }
 
     };
@@ -125,14 +159,14 @@
     /**
      * jQuery plugin to initialize all plugins
      *
-     * @param {object?} options jQuery App settings
+     * @param {object?} settings jQuery App settings
      */
-    $.fn.app = function (options) {
-        const settings  = $.extend($.app.settings, options);
-        const selector  = `[data-${ settings.namespace }]`;
-        const $elements = this.find(selector).addBack(selector);
+    $.fn.app = function (settings) {
+        const appSettings = $.extend({}, $.app.settings, settings);
+        const selector    = `[data-${ appSettings.namespace }]`;
+        const $elements   = this.find(selector).addBack(selector);
 
-        $elements.each((index, element) => $.app.call(element));
+        $elements.each((index, element) => $.app.call(element, appSettings));
 
         return this;
     };

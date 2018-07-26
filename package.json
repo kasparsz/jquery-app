@@ -27,10 +27,10 @@
     "plugin"
   ],
   "devDependencies": {
-    "buble": "^0.18.0",
+    "buble": "^0.19.3",
     "jquery": "^3.3.1",
-    "jsdom": "^11.6.0",
-    "mocha": "^5.0.0",
-    "uglify-js": "^3.3.8"
+    "jsdom": "^11.11.0",
+    "mocha": "^5.2.0",
+    "uglify-js": "^3.4.5"
   }
 }

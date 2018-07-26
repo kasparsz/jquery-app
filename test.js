@@ -141,4 +141,39 @@ describe('jquery-app', function(done) {
         done();
     }));
 
+    it('should call plugin with only specific namespace', createTestEnv(function (done, $) {
+        var foo = 0;
+        var bar = 0;
+
+        $.fn.foo = function () { foo++; };
+        $.fn.bar = function () { bar++; };
+
+        $('body').append('<div data-plugin="foo"><span data-other-plugin="bar"></span></div>').app({
+            'namespace': 'other-plugin'
+        });
+
+        assert.equal(foo, 0);
+        assert.equal(bar, 1);
+        done();
+    }));
+
+    it('should call plugins with only specific namespaces after dynamic DOM insert', createTestEnv(function (done, $) {
+        var foo = 0;
+        var bar = 0;
+
+        $.fn.foo = function () { foo++; };
+        $.fn.bar = function () { bar++; };
+
+        $('body').append('<div data-plugin="foo"><span data-other-plugin="bar"></span></div>');
+        $('body').app(); // data-plugin
+        $('body').app({'namespace': 'other-plugin'}); // data-other-plugin
+
+        $('body').append('<div data-plugin="foo"></div>');
+        $('body').app(); // data-plugin
+
+        assert.equal(foo, 2);
+        assert.equal(bar, 1);
+        done();
+    }));
+
 });
