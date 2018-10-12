@@ -1,7 +1,7 @@
 /*!
  * jquery-app <https://github.com/kasparsz/jquery-app>
  *
- * Copyright (c) 2016-2017, Kaspars Zuks.
+ * Copyright (c) 2016-2018, Kaspars Zuks.
  * Licensed under the MIT License.
  */
 
@@ -37,7 +37,7 @@
         /**
          * Call all plugins for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
          */
         call: function (element, settings) {
@@ -72,14 +72,14 @@
         /**
          * Returns list of plugin names for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
          * @returns {array} List of plugin names
          */
-        getPlugins: function ($element, settings) {
+        getPlugins: function (element, settings) {
             if ( settings === void 0 ) settings = $.app.settings;
 
-            var plugins = $element.data(settings.namespace).split(REGEX_SPLIT);
+            var plugins = ($(element).data(settings.namespace) || '').split(REGEX_SPLIT);
 
             return plugins.filter(function (plugin) {
                 if (plugin) {
@@ -97,16 +97,16 @@
         /**
          * Returns list of options/settings for specific plugin for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @param {object?} [settings] jQuery App settings
          * @returns {object} Plugin options/settings
          */
-        getPluginOptions: function ($element, plugin, settings) {
+        getPluginOptions: function (element, plugin, settings) {
             if ( settings === void 0 ) settings = $.app.settings;
 
             var options = {};
-            var data    = $element.data();
+            var data    = $(element).data();
 
             if (settings.namespaceOptions) {
                 // Pass only data starting with data-PLUGIN
@@ -137,27 +137,27 @@
         /**
          * Returns true if element has a specific plugin defined as data-... attribute
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @param {object?} [settings] jQuery App settings
          * @returns {boolean} True if plugin is defined for element, otherwise false
          */
-        hasPluginDefined: function ($element, plugin, settings) {
+        hasPluginDefined: function (element, plugin, settings) {
             if ( settings === void 0 ) settings = $.app.settings;
 
-            var plugins = $.app.getPlugins($element, settings);
+            var plugins = $.app.getPlugins(element, settings);
             return plugins.indexOf(plugin) !== -1;
         },
 
         /**
          * Returns true if specific plugin has been called for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @returns {boolean} True if plugin has been created for element, otherwise false
          */
-        hasPlugin: function ($element, plugin) {
-            var data = $element.data(PROPERTY_NAME);
+        hasPlugin: function (element, plugin) {
+            var data = $(element).data(PROPERTY_NAME);
             return !!(data && data[plugin]);
         }
 

@@ -37,7 +37,7 @@
         /**
          * Call all plugins for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
          */
         call: function (element, settings = $.app.settings) {
@@ -70,12 +70,12 @@
         /**
          * Returns list of plugin names for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
          * @returns {array} List of plugin names
          */
-        getPlugins: function ($element, settings = $.app.settings) {
-            const plugins = $element.data(settings.namespace).split(REGEX_SPLIT);
+        getPlugins: function (element, settings = $.app.settings) {
+            const plugins = ($(element).data(settings.namespace) || '').split(REGEX_SPLIT);
 
             return plugins.filter((plugin) => {
                 if (plugin) {
@@ -93,14 +93,14 @@
         /**
          * Returns list of options/settings for specific plugin for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @param {object?} [settings] jQuery App settings
          * @returns {object} Plugin options/settings
          */
-        getPluginOptions: function ($element, plugin, settings = $.app.settings) {
+        getPluginOptions: function (element, plugin, settings = $.app.settings) {
             const options = {};
-            const data    = $element.data();
+            const data    = $(element).data();
 
             if (settings.namespaceOptions) {
                 // Pass only data starting with data-PLUGIN
@@ -131,25 +131,25 @@
         /**
          * Returns true if element has a specific plugin defined as data-... attribute
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @param {object?} [settings] jQuery App settings
          * @returns {boolean} True if plugin is defined for element, otherwise false
          */
-        hasPluginDefined: function ($element, plugin, settings = $.app.settings) {
-            const plugins = $.app.getPlugins($element, settings);
+        hasPluginDefined: function (element, plugin, settings = $.app.settings) {
+            const plugins = $.app.getPlugins(element, settings);
             return plugins.indexOf(plugin) !== -1;
         },
 
         /**
          * Returns true if specific plugin has been called for element
          *
-         * @param {object} $element jQuery element
+         * @param {object} element HTML Element or jQuery element
          * @param {string} plugin Plugin name
          * @returns {boolean} True if plugin has been created for element, otherwise false
          */
-        hasPlugin: function ($element, plugin) {
-            const data = $element.data(PROPERTY_NAME);
+        hasPlugin: function (element, plugin) {
+            const data = $(element).data(PROPERTY_NAME);
             return !!(data && data[plugin]);
         }
 
