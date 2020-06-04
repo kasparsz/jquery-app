@@ -13,18 +13,33 @@ On repeated ```.app()``` calls if plugin already was initialized on the element 
 
 ## Install
 
-Install with [npm](https://www.npmjs.com/):
+Install with [npm](https://www.npmjs.com/) or yarn:
 
 ```sh
 $ npm install jquery-app --save
 ```
+```sh
+$ yarn add jquery-app
+```
 
 ## Usage
 
-Settings/options for plugin can be set either using ```data-PLUGIN="JSON"```
+List of plugins which will be called are defined by settings ```data-plugin="PLUGIN_NAMES"``` attribute on elements. Plugin names are either comma or space separated list of plugin names.
 
 ```html
-<!-- data-PLUGIN="JSON" -->
+<!-- data-PLUGIN_NAME="JSON_CONFIGURATION" -->
+<input
+    type="text"
+    data-plugin="datepicker"
+    />
+```
+
+### Plugin settings
+
+Settings/options for plugin can be set either using ```data-PLUGIN_NAME="JSON_CONFIGURATION"``` attribute
+
+```html
+<!-- data-PLUGIN_NAME="JSON_CONFIGURATION" -->
 <input
     type="text"
     data-plugin="datepicker"
@@ -32,7 +47,7 @@ Settings/options for plugin can be set either using ```data-PLUGIN="JSON"```
     />
 ```
 
-or specific ```data-PLUGIN-PROPERTY="VALUE"``` attribute
+or specific ```data-PLUGIN_NAME-PROPERTY="VALUE"``` attribute
 
 ```html
 <input
@@ -43,18 +58,37 @@ or specific ```data-PLUGIN-PROPERTY="VALUE"``` attribute
     />
 ```
 
+In this example under the hood jquery-app will call plugin passing options as
+```js
+$(INPUT_ELEMENT).datepicker({
+    "numberOfMonths": 3,
+    "showButtonPanel": true
+});
+```
 
-Call jquery-app to initialize plugins
+### Call jquery-app to initialize plugins
+
 ```js
 $(function () {
-    // Find all data-plugin elements inside body and initialize plugins
+    // Find all elements with data-plugin attribute inside body and initialize plugins
     $('body').app();
+});
+```
+
+In some cases you may want to use different attribute name than ```data-plugin```, that can be done using ```namespace``` property when calling ```$.fn.app```
+
+```js
+$(function () {
+    // Find all elements with data-attach attribute inside body and initialize plugins
+    $('body').app({
+        'namespace': 'attach'
+    });
 });
 ```
 
 ### Multiple plugin support
 
-Multiple plugins can be defined using comma separated list and since options are prefixed there won't be collision between options/settings for each plugin.
+Multiple plugins can be defined using space or comma separated list and since options are prefixed there won't be collision between options/settings for each plugin.
 
 ```html
 <div
@@ -66,19 +100,44 @@ Multiple plugins can be defined using comma separated list and since options are
     ></div>
 ```
 
+Under the hood jquery-app will call plugins as
+```js
+$(DIV_ELEMENT).pluginA({
+    "optionA": "alpha",
+    "optionB": "beta"
+});
+$(DIV_ELEMENT).pluginB({
+    "optionA": "gamma",
+    "optionC": "delta"
+});
+```
+
 
 ## API
 
-#### `app([options])`
+#### `$.app.settings` / `$.fn.app([settings])`
 
 
 ### Options
 
 | Name     | Type    | Usage                                    | Default  |
 | -------- | ------- | ---------------------------------------- | -------- |
-| namespace    | String | Data attribute name from which read list of plugin names | ```"plugin"```     |
+| namespace    | String | Data attribute name using which list of plugin names are defined | ```"plugin"```     |
 | namespaceOptions    | Boolean | Pass to plugin only data from attributes starting with plugin name, eg. data-datepicker. If set to false all data is passed to plugin as ```options``` and without removing prefixes | ```true```     |
 | debug    | Boolean | Output all successful and failed plugin initialization calls to the console | ```false```     |
+
+
+#### namespaceOptions 
+
+Using `namespaceOptions: true` (default)
+```html
+<div data-plugin="datepicker" data-datepicker-number-of-months="3">
+```
+
+Using `namespaceOptions: false`
+```html
+<div data-plugin="datepicker" data-number-of-months="3">
+```
 
 ## Running tests
 
@@ -90,7 +149,7 @@ $ npm install -d && npm test
 
 ## License
 
-Copyright © 2016, [Kaspars Zuks](https://github.com/kasparsz).
+Copyright © 2018, [Kaspars Zuks](https://github.com/kasparsz).
 Released under the [MIT license](https://github.com/kasparsz/jquery-app/blob/master/LICENSE).
 
 [npm-url]: https://npmjs.org/package/jquery-app
