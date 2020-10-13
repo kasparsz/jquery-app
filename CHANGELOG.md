@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2020-10-13
+### Added
+- `$.app.call(element, [settings], [pluginNames])` - added `plugins` optional argument to allow calling only a specific list of plugins
+- `$.fn.app([settings], [plugins])` - added `plugins` optional argument to allow calling only a specific list of plugins
+
 ## [1.4.0] - 2020-06-04
 ### Added
 - `$.app.hasPluginDefined(element, plugin, [settings])` - check if plugin is defined on an element
@@ -43,6 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ```debug``` configuration option [\#1](https://github.com/kasparsz/jquery-app/issues/1)
 
 
+[1.5.0]: https://github.com/kasparsz/jquery-app/compare/v1.4.0...v1.5.1
 [1.4.0]: https://github.com/kasparsz/jquery-app/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/kasparsz/jquery-app/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/kasparsz/jquery-app/compare/v1.2.0...v1.3.0

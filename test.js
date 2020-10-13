@@ -257,4 +257,26 @@ describe('jquery-app', function(done) {
         done();
     }));
 
+    it('Call only specific plugins', createTestEnv(function (done, $) {
+        var foo = 0;
+        var bar = 0;
+        var baz = 0;
+
+        $.fn.foo = function () { foo++; };
+        $.fn.bar = function () { bar++; };
+        $.fn.baz = function () { baz++; };
+
+        $('body').append('<div data-plugin="foo bar baz"></div>');
+        $('body').app({}, ['foo', 'baz']);
+
+        $('body').empty();
+        $('body').append('<div data-plugin="foo bar baz"></div>');
+        $('body').app(['foo', 'baz']);
+
+        assert.strictEqual(foo, 2);
+        assert.strictEqual(bar, 0);
+        assert.strictEqual(baz, 2);
+        done();
+    }));
+
 });

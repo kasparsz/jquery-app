@@ -39,12 +39,14 @@
          *
          * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
+         * @param {string?} [pluginNames] List of plugins which to call, if not specified all plugins will be called
          */
-        call: function (element, settings) {
+        call: function (element, settings, pluginNames) {
             if ( settings === void 0 ) settings = $.app.settings;
+            if ( pluginNames === void 0 ) pluginNames = null;
 
             var $element = $(element);
-            var plugins  = $.app.getPlugins($element, settings);
+            var plugins  = pluginNames || $.app.getPlugins($element, settings);
             var   data     = $element.data(PROPERTY_NAME);
 
             if (!data) {
@@ -132,8 +134,6 @@
             return options;
         },
 
-
-
         /**
          * Returns true if element has a specific plugin defined as data-... attribute
          *
@@ -167,14 +167,20 @@
     /**
      * jQuery plugin to initialize all plugins
      *
-     * @param {object?} settings jQuery App settings
+     * @param {object?} [settings] jQuery App settings
+     * @param {array} [plugins] List of plugins which to call, if not specified all plugins will be called
      */
-    $.fn.app = function (settings) {
+    $.fn.app = function (settings, plugins) {
+        if (Array.isArray(settings)) {
+            plugins = settings;
+            settings = {};
+        }
+
         var appSettings = $.extend({}, $.app.settings, settings);
         var selector    = "[data-" + (appSettings.namespace) + "]";
         var $elements   = this.find(selector).addBack(selector);
 
-        $elements.each(function (index, element) { return $.app.call(element, appSettings); });
+        $elements.each(function (index, element) { return $.app.call(element, appSettings, plugins); });
 
         return this;
     };

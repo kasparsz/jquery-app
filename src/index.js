@@ -39,10 +39,11 @@
          *
          * @param {object} element HTML Element or jQuery element
          * @param {object?} [settings] jQuery App settings
+         * @param {string?} [pluginNames] List of plugins which to call, if not specified all plugins will be called
          */
-        call: function (element, settings = $.app.settings) {
+        call: function (element, settings = $.app.settings, pluginNames = null) {
             const $element = $(element);
-            const plugins  = $.app.getPlugins($element, settings);
+            const plugins  = pluginNames || $.app.getPlugins($element, settings);
             let   data     = $element.data(PROPERTY_NAME);
 
             if (!data) {
@@ -157,14 +158,20 @@
     /**
      * jQuery plugin to initialize all plugins
      *
-     * @param {object?} settings jQuery App settings
+     * @param {object?} [settings] jQuery App settings
+     * @param {array} [plugins] List of plugins which to call, if not specified all plugins will be called
      */
-    $.fn.app = function (settings) {
+    $.fn.app = function (settings, plugins) {
+        if (Array.isArray(settings)) {
+            plugins = settings;
+            settings = {};
+        }
+
         const appSettings = $.extend({}, $.app.settings, settings);
         const selector    = `[data-${ appSettings.namespace }]`;
         const $elements   = this.find(selector).addBack(selector);
 
-        $elements.each((index, element) => $.app.call(element, appSettings));
+        $elements.each((index, element) => $.app.call(element, appSettings, plugins));
 
         return this;
     };
