@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.0] - 2021-09-16
+### Added
+- ```debug: 'error'``` to output only failed initialization calls
+### Fixed
+- Error when ```debug``` mode is on
+- Spelling
+### Changed
+- Updated documentation
+- Updated dependencies
+
 ## [1.5.0] - 2020-10-13
 ### Added
 - `$.app.call(element, [settings], [pluginNames])` - added `plugins` optional argument to allow calling only a specific list of plugins

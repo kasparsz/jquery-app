@@ -124,7 +124,7 @@ $(DIV_ELEMENT).pluginB({
 | -------- | ------- | ---------------------------------------- | -------- |
 | namespace    | String | Data attribute name using which list of plugin names are defined | ```"plugin"```     |
 | namespaceOptions    | Boolean | Pass to plugin only data from attributes starting with plugin name, eg. data-datepicker. If set to false all data is passed to plugin as ```options``` and without removing prefixes | ```true```     |
-| debug    | Boolean | Output all successful and failed plugin initialization calls to the console | ```false```     |
+| debug    | Boolean or String | Output all successful and failed plugin initialization calls to the console. If value is "error" then output only failed plugin initialization calls | ```false```     |
 
 
 #### namespaceOptions 

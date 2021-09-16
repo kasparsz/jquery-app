@@ -17,6 +17,7 @@
     const REGEX_SPLIT = /(\s*,\s*|\s+)/;
     const REGEX_NOT_LOWERCASE = /[^a-z]/;
     const PROPERTY_NAME = 'jQueryAppData';
+    const LEVEL_ERROR = 'error';
 
     $.app = {
 
@@ -59,10 +60,10 @@
                     const options = $.app.getPluginOptions($element, plugin, settings);
                     $element[plugin](options);
 
-                    if (settings.debug) {
+                    if (settings.debug && settings.debug !== LEVEL_ERROR) {
                         console.log('$.app called plugin "%s" on %o with options %O', plugin, element, options);
                     }
-                } else if (settings.debug) {
+                } else if (settings.debug && settings.debug !== LEVEL_ERROR) {
                     console.log('$.app skipped plugin "%s" on %o because it already has been called previously', plugin, element);
                 }
             });
@@ -79,11 +80,11 @@
             const plugins = ($(element).data(settings.namespace) || '').split(REGEX_SPLIT);
 
             return plugins.filter((plugin) => {
-                if (plugin) {
+                if (plugin.trim()) {
                     if (typeof $.fn[plugin] === 'function') {
                         return true;
                     } else if (settings.debug) {
-                        console.error('$.app coundn\'t find jQuery plugin "%s" declared on element %o', plugin, $element.get(0));
+                        console.error('$.app coundn\'t find jQuery plugin "%s" declared on element %o', plugin, $(element).get(0));
                     }
                 }
 
